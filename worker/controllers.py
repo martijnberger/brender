@@ -1,7 +1,6 @@
 import socket
 import urllib
 import time
-import sys
 import subprocess
 import platform
 import psutil
@@ -90,11 +89,11 @@ def info():
                    system=SYSTEM)
 
 
-def run_blender_in_thread(options):
+def run_command_in_thread(options):
     """We build the command to run blender in a thread
     """
-    render_command = [
-        options['blender_path'],
+    command_line_arguments = [
+        options['command'],  # this is actual command run on the server and should be sanitized
         '--background',
         options['file_path'],
         '--python',
@@ -107,9 +106,9 @@ def run_blender_in_thread(options):
         '--enable-autoexec'
         ]
 
-    print("[Info] Running %s" % render_command)
+    print("[Info] Running %s" % command_line_arguments)
 
-    process = subprocess.Popen(render_command,
+    process = subprocess.Popen(command_line_arguments,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     #flask.g.blender_process = process
@@ -128,13 +127,13 @@ def execute_job():
     options = {
         'job_id': request.form['job_id'],
         'file_path': request.form['file_path'],
-        'blender_path': request.form['blender_path'],
+        'command': request.form['command'],
         'start_frame': request.form['start'],
         'end_frame': request.form['end'],
         'render_settings': request.form['render_settings']
     }
 
-    render_thread = Thread(target=run_blender_in_thread, args=(options,))
+    render_thread = Thread(target=run_command_in_thread, args=(options,))
     render_thread.start()
 
     return jsonify(status='worker is running the command')

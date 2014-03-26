@@ -115,7 +115,7 @@ def start_job(worker, job):
 
     params = {'job_id': job.id,
               'file_path': filepath,
-              'blender_path': blender_path,
+              'command': blender_path,
               'render_settings': render_settings,
               'start': job.chunk_start,
               'end': job.chunk_end}

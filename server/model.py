@@ -1,6 +1,4 @@
 from peewee import *
-from datetime import date
-import random
 DATABASE = None
 
 db = SqliteDatabase(DATABASE)

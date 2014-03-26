@@ -6,7 +6,7 @@ from modules.shots import shots_module
 from modules.shows import shows_module
 from modules.settings import settings_module
 from modules.stats import stats_module
-from flask import Flask, render_template, jsonify, redirect, url_for, request
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
